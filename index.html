@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simone Chef | Private Gastronomy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c5a059;
+      --gold-light: #e2c28a;
+      --dark: #0f1113;
+      --bg: #16191c;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --text: #f0f2f5;
+      --text-muted: #a0a8b3;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --serif: 'Playfair Display', serif;
+      --sans: 'Outfit', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .serif { font-family: var(--serif); font-weight: 400; }
+
+    /* Glassmorphism utility */
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px;
+    }
+
+    header {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: linear-gradient(to bottom, rgba(15,17,19,0.8), transparent);
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .lang-switcher { display: flex; gap: 8px; }
+    .flag-btn {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 6px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .flag-btn.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(197, 160, 89, 0.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 85vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 5%;
+      overflow: hidden;
+    }
+    .hero-img {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      z-index: -1;
+    }
+    .hero-content h1 {
+      font-size: clamp(40px, 8vw, 84px);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      max-width: 900px;
+    }
+    .hero-content p {
+      color: var(--gold);
+      font-size: clamp(16px, 3vw, 20px);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 40px;
+    }
+
+    /* Experience Grid */
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 0 5%;
+    }
+    .section-title h2 { font-size: 48px; margin-bottom: 10px; }
+    .section-title p { color: var(--text-muted); font-size: 18px; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 30px;
+      padding: 0 5% 100px;
+    }
+
+    .menu-card {
+      transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .menu-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--gold);
+    }
+    .menu-title { font-size: 28px; margin-bottom: 15px; color: var(--gold); }
+    .menu-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.8; }
+    .menu-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .menu-price { font-size: 20px; font-weight: 600; color: var(--text); }
+    .menu-price span { font-size: 14px; color: var(--text-muted); font-weight: 300; }
+
+    .btn-select {
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 10px 24px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    /* Booking Flow */
+    #booking {
+      padding: 120px 5%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .stepper {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 50px;
+      justify-content: center;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .step.active { color: var(--gold); }
+    .step.active .step-num { border-color: var(--gold); background: var(--gold); color: var(--dark); }
+
+    /* Calendar Styling */
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .cal-day-header { color: var(--gold); font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .cal-day:hover:not(.vuoto):not(.passato) { background: var(--glass); color: var(--gold); }
+    .cal-day.selezionato { background: var(--gold); color: var(--dark); }
+    .cal-day.passato { opacity: 0.1; cursor: default; }
+
+    /* Form Styling */
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+    .form-control {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 15px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: 0.3s;
+    }
+    .form-control:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 18px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: 0.3s;
+    }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .slot {
+      padding: 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .slot:hover { border-color: var(--gold); color: var(--gold); }
+    .slot.selected { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+    .hidden { display: none !important; }
+
+    /* Footer Mobile Actions */
+    .footer-actions {
+      position: fixed;
+      bottom: 0; width: 100%;
+      background: rgba(15,17,19,0.9);
+      backdrop-filter: blur(10px);
+      padding: 15px 5%;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+      border-top: 1px solid var(--glass-border);
+    }
+    .action-link {
+      flex: 1;
+      text-align: center;
+      padding: 14px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .action-link.wa { background: #25D366; color: white; }
+    .action-link:not(.wa) { background: var(--glass); color: var(--text); border: 1px solid var(--glass-border); }
+
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 48px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      header { padding: 15px 5%; }
+      #booking { padding: 80px 5% 150px; }
+    }
+
+    .fade-in { animation: fadeIn 0.8s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* About Section */
+    .about-section {
+      padding: 100px 5%;
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 60px auto;
+    }
+    .about-img-container {
+      flex: 1;
+      position: relative;
+    }
+    .about-img-container::before {
+      content: "";
+      position: absolute;
+      top: -20px; left: -20px;
+      width: 100px; height: 100px;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      z-index: 1;
+    }
+    .about-img-container img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+      display: block;
+      transition: 0.5s;
+    }
+    .about-img-container:hover img { transform: scale(1.02); }
+    .about-content { flex: 1.2; }
+    .about-content h2 { font-size: 48px; margin-bottom: 20px; color: var(--gold); }
+    .about-content p { color: var(--text-muted); font-size: 18px; line-height: 1.8; }
+
+    @media (max-width: 992px) {
+      .about-section { flex-direction: column; text-align: center; padding: 60px 5%; margin: 40px auto; }
+      .about-content h2 { font-size: 36px; }
+      .about-img-container::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">SIMONE CHEF</a>
+    <div class="lang-switcher">
+      <button class="flag-btn active" id="flag-fr" onclick="changeLanguage('fr')">FR</button>
+      <button class="flag-btn" id="flag-it" onclick="changeLanguage('it')">IT</button>
+      <button class="flag-btn" id="flag-en" onclick="changeLanguage('en')">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img src="https://images.unsplash.com/photo-1550966841-3ee5ad4430c6?q=80&w=2070&auto=format&fit=crop" class="hero-img" alt="Luxury Table">
+      <div class="hero-content">
+        <p data-i18n="app_title">Private Dining Experience</p>
+        <h1 class="serif" data-i18n="hero_title">L'Excellence Gastronomique à Votre Table</h1>
+      </div>
+    </section>
+
+    <section class="about-section glass-card" style="position: relative; z-index: 10;">
+      <div class="about-img-container">
+        <img src="chef-team.png" alt="Simone Chef Team">
+      </div>
+      <div class="about-content">
+        <h2 class="serif" data-i18n="about_title">L'Anima della Cucina</h2>
+        <p id="bio-text" class="fade-in">...</p>
+      </div>
+    </section>
+
+    <div id="experiences">
+      <section class="section-title">
+        <h2 class="serif" data-i18n="menu_title">Expériences Culinaires</h2>
+        <p data-i18n="menu_subtitle">Un voyage sensoriel entre tradition et innovation</p>
+      </section>
+
+      <div class="menu-grid" id="lista-servizi">
+        <!-- Servizi caricate via JS -->
+      </div>
+    </div>
+
+    <!-- BOOKING FLOW -->
+    <section id="booking" class="hidden">
+      <div class="fade-in">
+        <div class="stepper">
+          <div class="step active" id="step-1">
+            <div class="step-num">1</div>
+            <div class="step-label" data-i18n="nav_date">Date</div>
+          </div>
+          <div class="step" id="step-2">
+            <div class="step-num">2</div>
+            <div class="step-label" data-i18n="nav_details">Détails</div>
+          </div>
+          <div class="step" id="step-3">
+            <div class="step-num">3</div>
+            <div class="step-label" data-i18n="nav_confirm">Confirmation</div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+           <!-- STEP 1: CALENDAR -->
+           <div id="screen-calendario">
+              <div class="cal-header">
+                <h3 class="serif" id="mese-corrente" style="font-size:24px;"></h3>
+                <div style="display:flex; gap:10px;">
+                  <button class="flag-btn" onclick="cambiaMese(-1)">‹</button>
+                  <button class="flag-btn" onclick="cambiaMese(1)">›</button>
+                </div>
+              </div>
+
+              <div class="cal-grid">
+                <div class="cal-day-header" data-i18n="day_mon">Lun</div>
+                <div class="cal-day-header" data-i18n="day_tue">Mar</div>
+                <div class="cal-day-header" data-i18n="day_wed">Mer</div>
+                <div class="cal-day-header" data-i18n="day_thu">Gio</div>
+                <div class="cal-day-header" data-i18n="day_fri">Ven</div>
+                <div class="cal-day-header" data-i18n="day_sat">Sam</div>
+                <div class="cal-day-header" data-i18n="day_sun">Dom</div>
+              </div>
+              <div class="cal-grid" id="giorni-mese" style="margin-top:10px;"></div>
+
+              <div id="slot-container" class="hidden">
+                <h3 class="serif" style="color:var(--gold); margin-top:40px; font-size:24px;" data-i18n="slots_title">Orario</h3>
+                <div class="slot-grid" id="slot-grid"></div>
+              </div>
+              
+              <button class="btn-submit hidden" id="btn-to-step2" onclick="processStep1()" data-i18n="btn_next">Continua</button>
+           </div>
+
+           <!-- STEP 2: FORM -->
+           <div id="screen-form" class="hidden">
+              <h2 class="serif" style="text-align:left; font-size:32px; margin-bottom:10px;" data-i18n="requests_title">Organizzazione</h2>
+              <p style="color:var(--text-muted); margin-bottom:30px;">Dettagli finali per la tua esperienza</p>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div class="form-group">
+                  <label data-i18n="label_name">Nome *</label>
+                  <input type="text" id="booking-nome" class="form-control" placeholder="...">
+                </div>
+                <div class="form-group">
+                  <label data-i18n="label_surname">Cognome *</label>
+                  <input type="text" id="booking-cognome" class="form-control" placeholder="...">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div class="form-group">
+                  <label data-i18n="label_phone">WhatsApp *</label>
+                  <input type="tel" id="booking-telefono" class="form-control" placeholder="+41...">
+                </div>
+                <div class="form-group">
+                  <label data-i18n="label_email">Email</label>
+                  <input type="email" id="booking-email" class="form-control" placeholder="...">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="label_guests">Ospiti (Min 2) *</label>
+                <input type="number" id="booking-guests" class="form-control" min="2" max="20" value="2">
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="label_allergies">Allergie</label>
+                <textarea id="booking-allergies" class="form-control" style="height:80px;"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="label_occasion">Occasione</label>
+                <input type="text" id="booking-occasion" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="label_requests">Personalizzazioni</label>
+                <textarea id="booking-requests" class="form-control" style="height:80px;"></textarea>
+              </div>
+
+              <button class="btn-submit" id="btn-conferma" onclick="confermaPrenotazione()" data-i18n="btn_confirm">Invia Richiesta</button>
+              <button class="action-link" style="width:100%; margin-top:15px; border-color:transparent; background:transparent;" onclick="tornaAlCalendario()" data-i18n="btn_back">‹ Indietro</button>
+           </div>
+
+           <!-- STEP 3: CONFERMA -->
+           <div id="screen-conferma" class="hidden" style="text-align:center;">
+              <div style="font-size: 80px; margin-bottom: 20px;">🥂</div>
+              <h2 class="serif" style="font-size:40px; margin-bottom:10px;" data-i18n="success_title">Merci!</h2>
+              <p style="color:var(--text-muted); font-size:18px; line-height:1.6;" data-i18n="success_subtitle">Ho ricevuto la tua richiesta. Ti contatterò prestissimo.</p>
+              <button class="btn-submit" onclick="location.reload()" style="max-width:300px; margin: 40px auto 0;" data-i18n="btn_new_booking">Fine</button>
+           </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer-actions">
+    <a href="https://wa.me/41782274379" target="_blank" class="action-link wa">WhatsApp</a>
+    <a href="tel:41782274379" class="action-link">Call Simone</a>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwGQi-1glr2NNbU10a71VWHHg2Pd9FRCSXZ7X5ejADYRo7E4Sh8HKKPjtkHoY59GWm7kg/exec';
+    
+    const translations = {
+      fr: {
+        app_title: "Simone Chef",
+        hero_title: "L'Excellence Gastronomique à Domicile",
+        menu_title: "Expériences Culinaires",
+        menu_subtitle: "Un voyage sensoriel à travers la tradition Toscane et Méditerranéenne",
+        nav_date: "Date", nav_details: "Détails", nav_confirm: "Confirmation",
+        slots_title: "Heure",
+        requests_title: "Organisation",
+        label_name: "Nom *", label_surname: "Prénom *",
+        label_phone: "WhatsApp *", label_email: "Email",
+        label_guests: "Invités (Min 2) *", label_allergies: "Allergies",
+        label_occasion: "Occasion", label_requests: "Détails",
+        btn_confirm: "Confirmer", btn_next: "Suivant", btn_back: "Retour",
+        success_title: "Merci!",
+        success_subtitle: "J'ai bien reçu votre demande. Je vous contacterai très bientôt.",
+        btn_new_booking: "Fermer",
+        day_mon: "Lun", day_tue: "Mar", day_wed: "Mer", day_thu: "Jeu", day_fri: "Ven", day_sat: "Sam", day_sun: "Dim",
+        alert_fill_all: "⚠️ Remplissez les champs obligatoires", loading_wait: "Attendez...", about_title: "L'Âme de notre Cuisine"
+      },
+      it: {
+        app_title: "Simone Chef",
+        hero_title: "L'Eccellenza Gastronomica a Casa Tua",
+        menu_title: "Esperienze Culinarie",
+        menu_subtitle: "Un viaggio sensoriale tra tradizione e innovazione",
+        nav_date: "Data", nav_details: "Dettagli", nav_confirm: "Conferma",
+        slots_title: "Orario",
+        requests_title: "Organizzazione",
+        label_name: "Nome *", label_surname: "Cognome *",
+        label_phone: "WhatsApp *", label_email: "Email",
+        label_guests: "Ospiti (Min 2) *", label_allergies: "Allergie",
+        label_occasion: "Occasione", label_requests: "Personalizzazioni",
+        btn_confirm: "Invia Richiesta", btn_next: "Continua", btn_back: "Indietro",
+        success_title: "Grazie!",
+        success_subtitle: "Ho ricevuto la tua richiesta. Ti contatterò al più presto.",
+        btn_new_booking: "Chiudi",
+        day_mon: "Lun", day_tue: "Mar", day_wed: "Mer", day_thu: "Gio", day_fri: "Ven", day_sat: "Sab", day_sun: "Dom",
+        alert_fill_all: "⚠️ Compila i campi obbligatori", loading_wait: "Attendere...", about_title: "L'Anima della nostra Cucina"
+      },
+      en: {
+        app_title: "Simone Chef",
+        hero_title: "Gourmet Excellence at Your Home",
+        menu_title: "Dining Experiences",
+        menu_subtitle: "A sensory journey through Tuscan tradition",
+        nav_date: "Date", nav_details: "Details", nav_confirm: "Confirmation",
+        slots_title: "Start Time",
+        requests_title: "Event Details",
+        label_name: "Name *", label_surname: "Surname *",
+        label_phone: "WhatsApp *", label_email: "Email",
+        label_guests: "Guests (Min 2) *", label_allergies: "Allergies",
+        label_occasion: "Occasion", label_requests: "Requests",
+        btn_confirm: "Send Request", btn_next: "Next", btn_back: "Back",
+        success_title: "Thank You!",
+        success_subtitle: "Request received. I will contact you shortly.",
+        btn_new_booking: "Done",
+        day_mon: "Mon", day_tue: "Tue", day_wed: "Wed", day_thu: "Thu", day_fri: "Fri", day_sat: "Sat", day_sun: "Sun",
+        alert_fill_all: "⚠️ Please fill all fields", loading_wait: "Processing...", about_title: "The Soul of our Kitchen"
+      }
+    };
+
+    let currentLang = 'fr';
+    let allServizi = [];
+    let servizioSelezionato = null;
+    let dataSelezionata = null;
+    let slotSelezionato = null;
+    let calMonth = new Date().getMonth();
+    let calYear = new Date().getFullYear();
+
+    window.onload = () => { initLang(); loadData(); };
+
+    function initLang() {
+      const saved = localStorage.getItem('simone-chef-lang');
+      if (saved) currentLang = saved;
+      updateUI();
+    }
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('simone-chef-lang', lang);
+      updateUI();
+      renderServizi();
+      renderCalendario();
+      renderBio();
+    }
+
+    function updateUI() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+      });
+      document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
+      const activeFlag = document.getElementById(`flag-${currentLang}`);
+      if(activeFlag) activeFlag.classList.add('active');
+    }
+
+    async function loadData() {
+      try {
+        const response = await fetch(`${API_URL}?action=getServizi`);
+        const data = await response.json();
+        if (data.successo) {
+          allServizi = data.servizi;
+          renderServizi();
+          if (data.bio) {
+             window.chefBio = data.bio;
+             renderBio();
+          }
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    function renderBio() {
+      const p = document.getElementById('bio-text');
+      if (p && window.chefBio) {
+        p.innerHTML = window.chefBio[currentLang] || window.chefBio.it;
+      }
+    }
+
+    function renderServizi() {
+      const container = document.getElementById('lista-servizi');
+      if(!container) return;
+      container.innerHTML = allServizi.map(s => `
+        <div class="glass-card menu-card fade-in" onclick="selezionaServizio('${s.nome.it}')">
+          <div class="menu-header">
+            <h3 class="menu-title">${s.nome[currentLang] || s.nome.it}</h3>
+            <p class="menu-desc">${s.descrizione[currentLang] || s.descrizione.it}</p>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">CHF ${s.prezzo}<span>/pp</span></div>
+            <button class="btn-select">${currentLang === 'it' ? 'Esplora' : (currentLang === 'fr' ? 'Explorer' : 'Explore')}</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selezionaServizio(nomeIt) {
+      servizioSelezionato = allServizi.find(s => s.nome.it === nomeIt);
+      document.getElementById('experiences').classList.add('hidden');
+      document.getElementById('booking').classList.remove('hidden');
+      document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+      renderCalendario();
+    }
+
+    function cambiaMese(dir) {
+      calMonth += dir;
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      renderCalendario();
+    }
+
+    function renderCalendario() {
+      const display = document.getElementById('mese-corrente');
+      const grid = document.getElementById('giorni-mese');
+      if(!grid) return;
+      const date = new Date(calYear, calMonth, 1);
+      display.textContent = date.toLocaleDateString(currentLang === 'it' ? 'it-IT' : (currentLang === 'fr' ? 'fr-FR' : 'en-US'), { month: 'long', year: 'numeric' });
+      
+      grid.innerHTML = "";
+      const firstDay = (new Date(calYear, calMonth, 1).getDay() + 6) % 7;
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const today = new Date(); today.setHours(0,0,0,0);
+      
+      for(let i=0; i<firstDay; i++) { grid.innerHTML += '<div class="cal-day vuoto"></div>'; }
+      for(let d=1; d<=daysInMonth; d++) {
+        const currentData = new Date(calYear, calMonth, d);
+        const isSelected = dataSelezionata && currentData.getTime() === dataSelezionata.getTime();
+        const calDay = document.createElement('div');
+        calDay.className = `cal-day ${currentData < today ? 'passato' : ''} ${isSelected ? 'selezionato' : ''}`;
+        calDay.textContent = d;
+        if (currentData >= today) calDay.onclick = () => selezionaData(currentData);
+        grid.appendChild(calDay);
+      }
+    }
+
+    async function selezionaData(date) {
+      dataSelezionata = date;
+      renderCalendario();
+      const slotGrid = document.getElementById('slot-grid');
+      slotGrid.innerHTML = '<div>⏳...</div>';
+      document.getElementById('slot-container').classList.remove('hidden');
+      try {
+        const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        const resp = await fetch(`${API_URL}?action=getSlotDisponibili&data=${dateStr}`);
+        const data = await resp.json();
+        slotGrid.innerHTML = data.slot.map(s => `
+          <div class="slot ${slotSelezionato === s.inizio ? 'selected' : ''}" onclick="selezionaSlot('${s.inizio}')">${s.inizio}</div>
+        `).join('');
+      } catch (e) { console.error(e); }
+    }
+
+    function selezionaSlot(s) {
+      slotSelezionato = s;
+      document.querySelectorAll('.slot').forEach(el => el.classList.remove('selected'));
+      event.target.classList.add('selected');
+      document.getElementById('btn-to-step2').classList.remove('hidden');
+    }
+
+    function processStep1() {
+       document.getElementById('screen-calendario').classList.add('hidden');
+       document.getElementById('screen-form').classList.remove('hidden');
+       document.getElementById('step-2').classList.add('active');
+    }
+
+    function tornaAlCalendario() {
+       document.getElementById('screen-form').classList.add('hidden');
+       document.getElementById('screen-calendario').classList.remove('hidden');
+       document.getElementById('step-2').classList.remove('active');
+    }
+
+    async function confermaPrenotazione() {
+       const nome = document.getElementById('booking-nome').value.trim();
+       const cognome = document.getElementById('booking-cognome').value.trim();
+       const tel = document.getElementById('booking-telefono').value.trim();
+       const email = document.getElementById('booking-email').value.trim();
+       if(!nome || !cognome || !tel) return alert(translations[currentLang].alert_fill_all);
+       
+       const btn = document.getElementById('btn-conferma');
+       btn.disabled = true;
+       btn.textContent = translations[currentLang].loading_wait;
+
+       const dStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(dataSelezionata.getDate()).padStart(2,'0')}`;
+       const note = `Ospiti: ${document.getElementById('booking-guests').value} | Allergie: ${document.getElementById('booking-allergies').value} | Occasione: ${document.getElementById('booking-occasion').value} | Menu/Varianti: ${document.getElementById('booking-requests').value} | Info Contatto: ${nome} ${cognome}, Tel: ${tel}, Email: ${email}`;
+
+       try {
+         const url = `${API_URL}?action=creaAppuntamento&data=${dStr}&ora=${slotSelezionato}&servizio=${encodeURIComponent(servizioSelezionato.nome.it)}&note=${encodeURIComponent(note)}`;
+         await fetch(url);
+         document.getElementById('screen-form').classList.add('hidden');
+         document.getElementById('screen-conferma').classList.remove('hidden');
+         document.getElementById('step-3').classList.add('active');
+       } catch(e) { alert("Error"); btn.disabled = false; }
+    }
+  </script>
+</body>
+</html>

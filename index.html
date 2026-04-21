@@ -4,6 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simone Chef | Private Gastronomy</title>
+  <meta name="description" content="Chef à domicile en Suisse et France. Découvrez l'excellence de la cuisine Toscane par Simone Chef.">
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://serafino86.github.io/simone-chef/">
+  <meta property="og:title" content="Simone Chef | Excellence à Domicile">
+  <meta property="og:description" content="Chef à domicile ? Appelez Simone, chef toscan chez vous, découvrez-en plus.">
+  <meta property="og:image" content="https://serafino86.github.io/simone-chef/chef-team.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://serafino86.github.io/simone-chef/">
+  <meta property="twitter:title" content="Simone Chef | Excellence à Domicile">
+  <meta property="twitter:description" content="Chef à domicile ? Appelez Simone, chef toscan chez vous, découvrez-en plus.">
+  <meta property="twitter:image" content="https://serafino86.github.io/simone-chef/chef-team.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -276,6 +291,47 @@
     .hidden { display: none !important; }
 
     /* Footer Mobile Actions */
+    .share-container {
+      position: fixed;
+      bottom: 85px; /* Sopra i bottoni di contatto */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 5%;
+      z-index: 1000;
+    }
+    .share-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .share-buttons {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .share-btn {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.3s;
+    }
+    .share-btn.wa { background: rgba(37, 211, 102, 0.15); color: #25D366; border: 1px solid rgba(37, 211, 102, 0.3); }
+    .share-btn.fb { background: rgba(24, 119, 242, 0.15); color: #1877F2; border: 1px solid rgba(24, 119, 242, 0.3); }
+    .share-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
+
     .footer-actions {
       position: fixed;
       bottom: 0; width: 100%;
@@ -500,6 +556,18 @@
       </div>
     </section>
   </main>
+
+  <div class="share-container">
+    <span class="share-label">Partager l'expérience</span>
+    <div class="share-buttons">
+      <a href="https://api.whatsapp.com/send?text=Chef%20%C3%A0%20domicile%20%3F%20Appelez%20Simone%2C%20chef%20toscan%20chez%20vous%2C%20d%C3%A9couvrez-en%20plus.%20https%3A%2F%2Fserafino86.github.io%2Fsimone-chef%2F" target="_blank" class="share-btn wa">
+        WhatsApp
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fserafino86.github.io%2Fsimone-chef%2F" target="_blank" class="share-btn fb">
+        Facebook
+      </a>
+    </div>
+  </div>
 
   <div class="footer-actions">
     <a href="https://wa.me/41782274379" target="_blank" class="action-link wa">WhatsApp</a>
